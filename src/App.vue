@@ -3,7 +3,7 @@
     <v-container>
       <v-row>
         <v-col>
-          <p>sievero mesh</p>
+          <v-select :items="jobTypes" filled label="Job type" />
         </v-col>
       </v-row>
     </v-container>
@@ -11,14 +11,20 @@
 </template>
 
 <script>
-import { VApp, VContainer, VRow, VCol } from 'vuetify/lib';
+import { VApp, VContainer, VRow, VCol, VSelect } from 'vuetify/lib';
 export default {
   name: 'sievero-form',
   components: {
     VApp,
     VContainer,
     VRow,
-    VCol
+    VCol,
+    VSelect
+  },
+  data() {
+    return {
+      jobTypes: ['Full time', 'Part time', 'Contract']
+    };
   }
 };
 </script>
