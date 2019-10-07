@@ -292,7 +292,9 @@
                   </v-list-item>
 
                   <v-btn
-                    :disabled="$v.emailForm.$invalid"
+                    :disabled="
+                      $v.emailForm.$invalid || $v.skillForm.skills.$invalid
+                    "
                     class="text-none"
                     color="primary"
                     @click="submit"
@@ -311,6 +313,7 @@
 <script>
 import { validationMixin } from 'vuelidate';
 import { required, email, integer } from 'vuelidate/lib/validators';
+import axios from 'axios';
 
 export default {
   name: 'sievero-form',
@@ -428,7 +431,28 @@ export default {
       value: null,
       unit: ''
     }),
-    submit() {}
+    // convert JS object to form data
+    encode: obj =>
+      Object.keys(obj).reduce((data, key) => {
+        data.append(key, obj[key]);
+        return data;
+      }),
+    async submit() {
+      await axios.post(
+        '/',
+        this.encode({
+          'form-name': 'search-jobs',
+          ...this.jobForm,
+          skills: this.skillForm.skills,
+          email: this.emailForm.email
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }
+      );
+    }
   }
 };
 </script>
