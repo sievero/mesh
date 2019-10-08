@@ -164,7 +164,7 @@
                           />
                         </v-radio-group>
 
-                        <input ref="locations" />
+                        <siv-algolia-places />
                       </v-col>
                     </v-row>
                   </v-container>
@@ -320,13 +320,14 @@ import { required, email, integer } from 'vuelidate/lib/validators';
 import axios from 'axios';
 import { AisInstantSearch } from 'vue-instantsearch';
 import algoliasearch from 'algoliasearch/lite';
-import placesWidget from 'places.js/instantsearchWidget';
+import SivAlgoliaPlaces from './components/SivAlgoliaPlaces';
 
 export default {
   name: 'sievero-form',
   mixins: [validationMixin],
   components: {
-    AisInstantSearch
+    AisInstantSearch,
+    SivAlgoliaPlaces
   },
   data() {
     return {
@@ -334,7 +335,7 @@ export default {
         process.env.VUE_APP_ALGOLIA_APP_ID,
         process.env.VUE_APP_ALGOLIA_SEARCH_API_KEY
       ),
-      placesClient: null,
+
       jobForm: {
         jobType: [],
         salary: null,
@@ -452,16 +453,6 @@ export default {
         email: this.emailForm.email
       });
     }
-  },
-  mounted() {
-    console.log(this.$refs.locations);
-    this.placesClient = placesWidget({
-      appId: process.env.VUE_APP_ALGOLIA_PLACES_APP_ID,
-      apiKey: process.env.VUE_APP_ALGOLIA_PLACES_SEARCH_API_KEY,
-      container: this.$refs.locations,
-      style: false,
-      debug: process.env.NODE_ENV !== 'production'
-    });
   }
 };
 </script>
