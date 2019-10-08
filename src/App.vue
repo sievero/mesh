@@ -72,15 +72,20 @@
                             <form>
                               <v-row dense>
                                 <v-col cols="12" xs="12" sm="4">
-                                  <v-text-field
-                                    label="Name"
-                                    v-model="skillForm.skill.name"
-                                    filled
-                                    required
-                                    @input="$v.skillForm.skill.name.$touch()"
-                                    @blur="$v.skillForm.skill.name.$touch()"
-                                    :error-messages="nameErrors"
-                                  />
+                                  <ais-instant-search
+                                    index-name="dev_skills_webDevelopment_frontend"
+                                    :search-client="searchClient"
+                                  >
+                                    <v-text-field
+                                      label="Name"
+                                      v-model="skillForm.skill.name"
+                                      filled
+                                      required
+                                      @input="$v.skillForm.skill.name.$touch()"
+                                      @blur="$v.skillForm.skill.name.$touch()"
+                                      :error-messages="nameErrors"
+                                    />
+                                  </ais-instant-search>
                                 </v-col>
                                 <v-col cols="12" xs="12" sm="4">
                                   <v-text-field
@@ -131,12 +136,14 @@
                           :items="jobTypes"
                           filled
                           multiple
-                          label="Job type"/>
+                          label="Job type"
+                        />
                         <v-text-field
                           label="Minimum salary"
                           type="number"
                           v-model="jobForm.salary"
-                          filled/>
+                          filled
+                        />
 
                         <v-radio-group
                           class="mt-0"
@@ -157,11 +164,8 @@
                           />
                         </v-radio-group>
 
-                        <v-text-field
-                          label="Locations"
-                          v-model="jobForm.locations"
-                          filled
-                      /></v-col>
+                        <input ref="locations" />
+                      </v-col>
                     </v-row>
                   </v-container>
                 </v-stepper-content>
@@ -314,13 +318,23 @@
 import { validationMixin } from 'vuelidate';
 import { required, email, integer } from 'vuelidate/lib/validators';
 import axios from 'axios';
+import { AisInstantSearch } from 'vue-instantsearch';
+import algoliasearch from 'algoliasearch/lite';
+import placesWidget from 'places.js/instantsearchWidget';
 
 export default {
   name: 'sievero-form',
   mixins: [validationMixin],
-
+  components: {
+    AisInstantSearch
+  },
   data() {
     return {
+      searchClient: algoliasearch(
+        process.env.VUE_APP_ALGOLIA_APP_ID,
+        process.env.VUE_APP_ALGOLIA_SEARCH_API_KEY
+      ),
+      placesClient: null,
       jobForm: {
         jobType: [],
         salary: null,
@@ -438,6 +452,16 @@ export default {
         email: this.emailForm.email
       });
     }
+  },
+  mounted() {
+    console.log(this.$refs.locations);
+    this.placesClient = placesWidget({
+      appId: process.env.VUE_APP_ALGOLIA_PLACES_APP_ID,
+      apiKey: process.env.VUE_APP_ALGOLIA_PLACES_SEARCH_API_KEY,
+      container: this.$refs.locations,
+      style: false,
+      debug: process.env.NODE_ENV !== 'production'
+    });
   }
 };
 </script>
