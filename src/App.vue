@@ -79,7 +79,7 @@
                                     <v-text-field
                                       label="Name"
                                       v-model="skillForm.skill.name"
-                                      filled
+                                      outlined
                                       required
                                       @input="$v.skillForm.skill.name.$touch()"
                                       @blur="$v.skillForm.skill.name.$touch()"
@@ -91,7 +91,7 @@
                                   <v-text-field
                                     label="Value"
                                     v-model="skillValue"
-                                    filled
+                                    outlined
                                     required
                                     @input="$v.skillForm.skill.value.$touch()"
                                     @blur="$v.skillForm.skill.value.$touch()"
@@ -103,7 +103,7 @@
                                   <v-select
                                     v-model="skillForm.skill.unit"
                                     :items="units"
-                                    filled
+                                    outlined
                                     label="Unit"
                                     required
                                     @input="$v.skillForm.skill.unit.$touch()"
@@ -131,10 +131,12 @@
                     <v-row>
                       <v-col>
                         <div class="subtitle-1 text-center mb-3">Optional</div>
+                        <siv-algolia-places />
+
                         <v-select
                           v-model="jobForm.jobType"
                           :items="jobTypes"
-                          filled
+                          outlined
                           multiple
                           label="Job type"
                         />
@@ -142,7 +144,7 @@
                           label="Minimum salary"
                           type="number"
                           v-model="jobForm.salary"
-                          filled
+                          outlined
                         />
 
                         <v-radio-group
@@ -163,8 +165,6 @@
                             :value="remoteOnlyText"
                           />
                         </v-radio-group>
-
-                        <siv-algolia-places />
                       </v-col>
                     </v-row>
                   </v-container>
@@ -177,7 +177,7 @@
                       label="E-mail"
                       v-model="emailForm.email"
                       :error-messages="emailErrors"
-                      filled
+                      outlined
                       type="email"
                       required
                       @input="$v.emailForm.email.$touch()"
