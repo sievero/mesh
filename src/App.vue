@@ -34,9 +34,8 @@
               <v-stepper-items>
                 <v-stepper-content step="1">
                   <v-container>
-                    <v-row dense>
+                    <v-row dense class="mb-5">
                       <v-col>
-                        <div class="subtitle-1 text-center mb-3">Required</div>
                         <v-card outlined>
                           <v-card-title>Add a skill</v-card-title>
                           <v-card-text>
@@ -130,10 +129,10 @@
                     </v-row>
                     <v-row>
                       <v-col>
-                        <div class="subtitle-1 text-center mb-3">Optional</div>
-                        <siv-algolia-places />
+                        <vuetify-algolia-places v-model="jobForm.locations" />
 
                         <v-select
+                          class="mt-8"
                           v-model="jobForm.jobType"
                           :items="jobTypes"
                           outlined
@@ -173,6 +172,7 @@
                 <v-stepper-content step="2">
                   <form>
                     <v-text-field
+                      class="mt-2"
                       autofocus
                       label="E-mail"
                       v-model="emailForm.email"
@@ -235,13 +235,16 @@
                         Locations
                       </v-list-item-title>
                       <v-list-item-subtitle>
-                        <template v-if="jobForm.locations.length > 0">
+                        <!-- <template v-if="jobForm.locations.length > 0">
                           <span v-for="(loc, i) in jobForm.locations" :key="i">
                             {{ loc
                             }}{{
                               i === jobForm.locations.length - 1 ? '' : ','
                             }}
                           </span>
+                        </template> -->
+                        <template v-if="jobForm.locations">
+                          <span>{{ jobForm.locations }}</span>
                         </template>
                         <template v-else>
                           Any
@@ -320,14 +323,12 @@ import { required, email, integer } from 'vuelidate/lib/validators';
 import axios from 'axios';
 import { AisInstantSearch } from 'vue-instantsearch';
 import algoliasearch from 'algoliasearch/lite';
-import SivAlgoliaPlaces from './components/SivAlgoliaPlaces';
 
 export default {
   name: 'sievero-form',
   mixins: [validationMixin],
   components: {
-    AisInstantSearch,
-    SivAlgoliaPlaces
+    AisInstantSearch
   },
   data() {
     return {
@@ -339,7 +340,7 @@ export default {
       jobForm: {
         jobType: [],
         salary: null,
-        locations: [],
+        locations: null,
         locationPreference: 'On-site or remote'
       },
       skillForm: {
