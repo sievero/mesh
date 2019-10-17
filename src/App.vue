@@ -129,25 +129,6 @@
                     </v-row>
                     <v-row>
                       <v-col>
-                        <vuetify-algolia-places
-                          v-model="jobForm.locations"
-                          outlined
-                        />
-
-                        <v-select
-                          v-model="jobForm.jobType"
-                          :items="jobTypes"
-                          outlined
-                          multiple
-                          label="Job type"
-                        />
-                        <v-text-field
-                          label="Minimum salary"
-                          type="number"
-                          v-model="jobForm.salary"
-                          outlined
-                        />
-
                         <v-radio-group
                           class="mt-0"
                           v-model="jobForm.locationPreference"
@@ -166,6 +147,26 @@
                             :value="remoteOnlyText"
                           />
                         </v-radio-group>
+
+                        <vuetify-algolia-places
+                          v-model="jobForm.locations"
+                          outlined
+                          label="Locations"
+                        />
+
+                        <v-select
+                          v-model="jobForm.jobType"
+                          :items="jobTypes"
+                          outlined
+                          multiple
+                          label="Job type"
+                        />
+                        <v-text-field
+                          label="Minimum salary"
+                          type="number"
+                          v-model="jobForm.salary"
+                          outlined
+                        />
                       </v-col>
                     </v-row>
                   </v-container>
