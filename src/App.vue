@@ -34,7 +34,7 @@
               <v-stepper-items>
                 <v-stepper-content step="1">
                   <v-container>
-                    <v-row dense class="mb-5">
+                    <v-row dense>
                       <v-col>
                         <v-card outlined>
                           <v-card-title>Add a skill</v-card-title>
@@ -129,10 +129,12 @@
                     </v-row>
                     <v-row>
                       <v-col>
-                        <vuetify-algolia-places v-model="jobForm.locations" />
+                        <vuetify-algolia-places
+                          v-model="jobForm.locations"
+                          outlined
+                        />
 
                         <v-select
-                          class="mt-8"
                           v-model="jobForm.jobType"
                           :items="jobTypes"
                           outlined
