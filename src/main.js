@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import App from './App.vue';
 import vuetify from './plugins/vuetify';
+import * as Sentry from '@sentry/browser';
+import * as Integrations from '@sentry/integrations';
 
 /*
   See comment in <script> in ./components/VuetifyAlgoliaPlaces.vue
@@ -9,6 +11,17 @@ import vuetify from './plugins/vuetify';
 import VuetifyAlgoliaPlaces from './components/vuetify-algolia-places.js';
 
 Vue.config.productionTip = false;
+
+Sentry.init({
+  dsn: process.env.VUE_APP_SENTRY_URL,
+  integrations: [
+    new Integrations.Vue({
+      Vue,
+      logErrors: true,
+      environment: process.env.NODE_ENV
+    })
+  ]
+});
 
 Vue.use(VuetifyAlgoliaPlaces, {
   algolia: {

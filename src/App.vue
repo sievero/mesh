@@ -354,6 +354,7 @@
 import { validationMixin } from 'vuelidate';
 import { required, email, integer } from 'vuelidate/lib/validators';
 import axios from 'axios';
+import * as Sentry from '@sentry/browser';
 
 export default {
   name: 'sievero-form',
@@ -385,7 +386,8 @@ export default {
       onSiteOnlyText: 'On-site only',
       remoteOnlyText: 'Remote only',
       includeBothText: 'On-site or remote',
-      locationsQuery: null
+      locationsQuery: null,
+      loading: false
     };
   },
   validations: {
@@ -472,11 +474,18 @@ export default {
       unit: ''
     }),
     async submit() {
-      await axios.post('/.netlify/functions/postForm', {
-        ...this.jobForm,
-        skills: this.skillForm.skills,
-        email: this.emailForm.email
-      });
+      try {
+        this.loading = true;
+        await axios.post('/.netlify/functions/postForm', {
+          ...this.jobForm,
+          skills: this.skillForm.skills,
+          email: this.emailForm.email
+        });
+      } catch (error) {
+        Sentry.captureException(error);
+      } finally {
+        this.loading = false;
+      }
     }
   }
 };
