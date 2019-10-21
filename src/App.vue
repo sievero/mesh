@@ -36,8 +36,18 @@
                   <v-container>
                     <v-row dense>
                       <v-col>
+                        <div class="headline">Skills</div>
+                        <div class="body-2 mb-2">
+                          List the tools, technologies, languages, and
+                          third-party APIs (Algolia, Stripe, Auth0, etc.) you
+                          use.
+                          <span class="font-weight-bold"
+                            >We will only show you jobs whose requirements are a
+                            subset of your skills</span
+                          >, meaning you will at least meet the minimum
+                          requirements of every job we send you.
+                        </div>
                         <v-card outlined>
-                          <v-card-title>Add a skill</v-card-title>
                           <v-card-text>
                             <v-data-iterator
                               disable-filtering
@@ -68,6 +78,10 @@
                               </template>
                             </v-data-iterator>
 
+                            <div class="my-1">
+                              Specify how long you've been using each skill
+                            </div>
+
                             <form>
                               <v-row dense>
                                 <v-col cols="12" xs="12" sm="4">
@@ -91,6 +105,8 @@
                                     @blur="$v.skillForm.skill.value.$touch()"
                                     type="number"
                                     :error-messages="valueErrors"
+                                    persistent-hint
+                                    hint="Number of months or years"
                                   />
                                 </v-col>
                                 <v-col cols="12" xs="12" sm="4">
@@ -128,6 +144,7 @@
                           class="mt-0"
                           v-model="jobForm.locationPreference"
                           row
+                          hide-details
                         >
                           <v-radio
                             :label="includeBothText"
@@ -142,6 +159,14 @@
                             :value="remoteOnlyText"
                           />
                         </v-radio-group>
+
+                        <div class="body-2 mt-3 mb-2">
+                          List where you would like to work. If remote, note
+                          that some companies have a preferred timezone, state,
+                          country, etc. for their remote jobs. Pick the
+                          locations where you will be spending most of your time
+                          as a remote worker.
+                        </div>
 
                         <vuetify-algolia-places
                           v-model="jobForm.locations"
@@ -174,6 +199,11 @@
                 </v-stepper-content>
 
                 <v-stepper-content step="2">
+                  <div class="body-2 my-2">
+                    Currently we only support contacting you via e-mail, but
+                    plan to support other methods in the future.
+                  </div>
+
                   <form>
                     <v-text-field
                       class="mt-2"
@@ -191,7 +221,6 @@
                 </v-stepper-content>
 
                 <v-stepper-content step="3">
-                  <div class="display-1 text-center">Review</div>
                   <v-list-item>
                     <v-list-item-content>
                       <v-list-item-title>
