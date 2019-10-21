@@ -2,6 +2,16 @@
   <v-app>
     <v-content>
       <v-container>
+        <v-row justify="center">
+          <v-col cols="auto">
+            <v-alert type="error" dismissible v-model="errorAlert"
+              >There was an error submitting this form</v-alert
+            >
+            <v-alert type="success" dismissible v-model="successAlert"
+              >Success! Check your inbox for a welcome e-mail</v-alert
+            >
+          </v-col>
+        </v-row>
         <v-row>
           <v-col>
             <v-stepper v-model="stepper">
@@ -338,6 +348,7 @@
                     class="text-none"
                     color="primary"
                     @click="submit"
+                    :loading="loading"
                     >Submit</v-btn
                   >
                 </v-stepper-content>
@@ -387,7 +398,9 @@ export default {
       remoteOnlyText: 'Remote only',
       includeBothText: 'On-site or remote',
       locationsQuery: null,
-      loading: false
+      loading: false,
+      errorAlert: false,
+      successAlert: false
     };
   },
   validations: {
@@ -481,8 +494,10 @@ export default {
           skills: this.skillForm.skills,
           email: this.emailForm.email
         });
+        this.successAlert = true;
       } catch (error) {
         Sentry.captureException(error);
+        this.errorAlert = true;
       } finally {
         this.loading = false;
       }
