@@ -1,7 +1,12 @@
 import Vue from 'vue';
 import App from './App.vue';
 import vuetify from './plugins/vuetify';
-import VuetifyAlgoliaPlaces from 'vuetify-algolia-places';
+
+/*
+  See comment in <script> in ./components/VuetifyAlgoliaPlaces.vue
+*/
+// import VuetifyAlgoliaPlaces from 'vuetify-algolia-places';
+import VuetifyAlgoliaPlaces from './components/vuetify-algolia-places.js';
 
 Vue.config.productionTip = false;
 

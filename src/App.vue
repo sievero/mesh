@@ -71,20 +71,15 @@
                             <form>
                               <v-row dense>
                                 <v-col cols="12" xs="12" sm="4">
-                                  <ais-instant-search
-                                    index-name="dev_skills_webDevelopment_frontend"
-                                    :search-client="searchClient"
-                                  >
-                                    <v-text-field
-                                      label="Name"
-                                      v-model="skillForm.skill.name"
-                                      outlined
-                                      required
-                                      @input="$v.skillForm.skill.name.$touch()"
-                                      @blur="$v.skillForm.skill.name.$touch()"
-                                      :error-messages="nameErrors"
-                                    />
-                                  </ais-instant-search>
+                                  <v-text-field
+                                    label="Name"
+                                    v-model="skillForm.skill.name"
+                                    outlined
+                                    required
+                                    @input="$v.skillForm.skill.name.$touch()"
+                                    @blur="$v.skillForm.skill.name.$touch()"
+                                    :error-messages="nameErrors"
+                                  />
                                 </v-col>
                                 <v-col cols="12" xs="12" sm="4">
                                   <v-text-field
@@ -150,7 +145,13 @@
 
                         <vuetify-algolia-places
                           v-model="jobForm.locations"
+                          :search-input.sync="locationsQuery"
+                          multiple
+                          cache-items
+                          chips
+                          deletable-chips
                           outlined
+                          :debounce="250"
                           label="Locations"
                         />
 
@@ -238,16 +239,15 @@
                         Locations
                       </v-list-item-title>
                       <v-list-item-subtitle>
-                        <!-- <template v-if="jobForm.locations.length > 0">
-                          <span v-for="(loc, i) in jobForm.locations" :key="i">
-                            {{ loc
-                            }}{{
-                              i === jobForm.locations.length - 1 ? '' : ','
-                            }}
-                          </span>
-                        </template> -->
-                        <template v-if="jobForm.locations">
-                          <span>{{ jobForm.locations }}</span>
+                        <template v-if="jobForm.locations.length > 0">
+                          <v-chip
+                            label
+                            v-for="loc in jobForm.locations"
+                            :key="loc.value"
+                            class="mb-1 mr-1"
+                          >
+                            {{ loc.value }}
+                          </v-chip>
                         </template>
                         <template v-else>
                           Any
@@ -266,6 +266,7 @@
                           label
                           v-for="skill in skillForm.skills"
                           :key="skill.name"
+                          class="mb-1 mr-1"
                         >
                           <span class="font-weight-bold mr-1">{{
                             skill.name
@@ -324,26 +325,16 @@
 import { validationMixin } from 'vuelidate';
 import { required, email, integer } from 'vuelidate/lib/validators';
 import axios from 'axios';
-import { AisInstantSearch } from 'vue-instantsearch';
-import algoliasearch from 'algoliasearch/lite';
 
 export default {
   name: 'sievero-form',
   mixins: [validationMixin],
-  components: {
-    AisInstantSearch
-  },
   data() {
     return {
-      searchClient: algoliasearch(
-        process.env.VUE_APP_ALGOLIA_APP_ID,
-        process.env.VUE_APP_ALGOLIA_SEARCH_API_KEY
-      ),
-
       jobForm: {
         jobType: [],
         salary: null,
-        locations: null,
+        locations: [],
         locationPreference: 'On-site or remote'
       },
       skillForm: {
@@ -364,7 +355,8 @@ export default {
       stepper: 1,
       onSiteOnlyText: 'On-site only',
       remoteOnlyText: 'Remote only',
-      includeBothText: 'On-site or remote'
+      includeBothText: 'On-site or remote',
+      locationsQuery: null
     };
   },
   validations: {
