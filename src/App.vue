@@ -198,7 +198,7 @@
                           label="Job type"
                         />
                         <v-text-field
-                          label="Minimum salary"
+                          label="Minimum salary (USD)"
                           type="number"
                           v-model="jobForm.salary"
                           outlined
