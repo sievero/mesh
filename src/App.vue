@@ -8,7 +8,7 @@
               >There was an error submitting this form</v-alert
             >
             <v-alert type="success" dismissible v-model="successAlert"
-              >Success! Check your inbox for a welcome e-mail</v-alert
+              >Success! Check your inbox for a welcome email</v-alert
             >
           </v-col>
         </v-row>
@@ -210,15 +210,15 @@
 
                 <v-stepper-content step="2">
                   <div class="body-2 my-2">
-                    Currently we only support contacting you via e-mail, but
-                    plan to support other methods in the future.
+                    Currently we only support contacting you via email, but plan
+                    to support other methods in the future.
                   </div>
 
                   <form>
                     <v-text-field
                       class="mt-2"
                       autofocus
-                      label="E-mail"
+                      label="Email"
                       v-model="emailForm.email"
                       :error-messages="emailErrors"
                       outlined
@@ -326,7 +326,7 @@
                   <v-list-item>
                     <v-list-item-content>
                       <v-list-item-title>
-                        E-mail
+                        Email
                       </v-list-item-title>
                       <v-list-item-subtitle>
                         {{ emailForm.email }}
@@ -440,7 +440,7 @@ export default {
     emailErrors() {
       const errors = [];
       if (!this.$v.emailForm.email.$dirty) return errors;
-      !this.$v.emailForm.email.email && errors.push('Must be valid e-mail');
+      !this.$v.emailForm.email.email && errors.push('Must be valid email');
       !this.$v.emailForm.email.required && errors.push('Required');
       return errors;
     },
