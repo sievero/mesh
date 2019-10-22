@@ -379,13 +379,7 @@ export default {
         locationPreference: 'On-site or remote'
       },
       skillForm: {
-        skills: [
-          {
-            name: 'Vue.js',
-            value: 2,
-            unit: 'years'
-          }
-        ],
+        skills: [],
         skill: this.newSkill()
       },
       emailForm: {
