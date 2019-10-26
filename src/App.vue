@@ -2,7 +2,7 @@
   <v-app>
     <v-content>
       <v-container>
-        <v-row justify="center">
+        <v-row justify="center" class="text-center">
           <v-col cols="auto">
             <v-alert type="error" dismissible v-model="errorAlert"
               >There was an error submitting this form</v-alert
@@ -10,6 +10,15 @@
             <v-alert type="success" dismissible v-model="successAlert"
               >Success! Check your inbox for a welcome email</v-alert
             >
+
+            <v-btn
+              v-if="successAlert"
+              href="https://sievero.com"
+              outlined
+              class="text-none"
+            >
+              Back to sievero.com
+            </v-btn>
           </v-col>
         </v-row>
         <v-row>
@@ -343,7 +352,9 @@
 
                   <v-btn
                     :disabled="
-                      $v.emailForm.$invalid || $v.skillForm.skills.$invalid
+                      $v.emailForm.$invalid ||
+                        $v.skillForm.skills.$invalid ||
+                        disableSubmit
                     "
                     class="text-none"
                     color="primary"
@@ -394,7 +405,8 @@ export default {
       locationsQuery: null,
       loading: false,
       errorAlert: false,
-      successAlert: false
+      successAlert: false,
+      disableSubmit: false
     };
   },
   validations: {
@@ -489,7 +501,9 @@ export default {
           skills: this.skillForm.skills,
           email: this.emailForm.email
         });
+        this.disableSubmit = true;
         this.successAlert = true;
+        this.$vuetify.goTo(0);
       } catch (error) {
         Sentry.captureException(error);
         this.errorAlert = true;
