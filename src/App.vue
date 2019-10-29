@@ -497,8 +497,10 @@ export default {
         this.loading = true;
         await axios.post('/.netlify/functions/postForm', {
           ...this.jobForm,
-          locations: this.jobForm.locations.map(l => l.value),
-          skills: this.skillForm.skills,
+          locations: this.jobForm.locations.map(l => l.value).join('; '),
+          skills: this.skillForm.skills
+            .map(s => `${s.name} (${s.value} ${s.unit})`)
+            .join(', '),
           email: this.emailForm.email
         });
         this.disableSubmit = true;
