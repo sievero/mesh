@@ -22,7 +22,7 @@
     "vue": "^2.6.10",
     "vue-instantsearch": "^2.5.0",
     "vuelidate": "^0.7.4",
-    "vuetify": "^2.0.0",
+    "vuetify": "^2.6.10",
     "vuetify-algolia-places": "^1.0.0"
   },
   "devDependencies": {
